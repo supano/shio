@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package cc.entity.v1;
+
+option csharp_namespace = "Cc.Entity.V1";
+option go_package = "entityv1";
+option java_multiple_files = true;
+option java_outer_classname = "SessionProto";
+option java_package = "com.cc.entity.v1";
+option objc_class_prefix = "CEX";
+option php_namespace = "Cc\\Entity\\V1";
+
+// Session.
+message Session {
+  string id = 1;
+  string user_id = 2;
+  int64 created_at = 3;
+}

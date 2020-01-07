@@ -1,0 +1,13 @@
+package transport
+
+import (
+	endpointv1 "github.com/digithun/shio/packages/admin/api/pkg/endpoint/v1"
+	"google.golang.org/grpc"
+)
+
+func New(endpoint endpointv1.ShioAdminAPIServer) *grpc.Server {
+	s := grpc.NewServer()
+
+	endpointv1.RegisterLendgatoAdminAPIServer(s, endpoint)
+	return s
+}
