@@ -23,22 +23,11 @@ func New() *App {
 }
 
 func (a *App) Run(grpcPort string) error {
-	//tcp, err := net.Listen("tcp", grpcPort)
-	//if err != nil {
-	//	panic(err)
-	//}
 
-	//grpcServer := grpc.NewServer()
-	//wrappedGrpc := grpcweb.WrapServer(grpcServer)
+	r := chi.NewRouter()
+	r.Handle("/*", http.StripPrefix("/", grpcweb.WrapServer(a.serv)))
+	handler := cors.AllowAll().Handler(r)
 
-	//go func() {
-		r := chi.NewRouter()
-		r.Handle("/*", http.StripPrefix("/", grpcweb.WrapServer(a.serv)))
-		handler := cors.AllowAll().Handler(r)
-		//_ =
-	//}()
-
-	//reflection.Register(a.serv)
 	return http.ListenAndServe(grpcPort,handler)
 }
 

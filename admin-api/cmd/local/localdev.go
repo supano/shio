@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/digithun/shio/admin-api/cmd/bootstrap"
 	"os"
 )
@@ -9,9 +8,14 @@ import (
 func main()  {
 	app := bootstrap.New()
 
-	err := app.Run(":4444")
+	err := os.Setenv("DATASTORE_EMULATOR_HOST", "localhost:5545")
 	if err != nil {
-		fmt.Println("err", err)
+		panic(err)
+		return
+	}
+
+	err = app.Run(":4444")
+	if err != nil {
 		panic(err)
 		return
 	}
