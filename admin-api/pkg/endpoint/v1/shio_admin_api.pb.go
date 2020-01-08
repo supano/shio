@@ -6,7 +6,7 @@ package endpointv1
 import (
 	context "context"
 	fmt "fmt"
-	v1 "github.com/digithun/shio/packages/admin/api/pkg/entity/v1"
+	v1 "github.com/digithun/shio/admin-api/pkg/entity/v1"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"

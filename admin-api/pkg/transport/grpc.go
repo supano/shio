@@ -1,7 +1,7 @@
 package transport
 
 import (
-	endpointv1 "github.com/digithun/shio/packages/admin/api/pkg/endpoint/v1"
+	endpointv1 "github.com/digithun/shio/admin-api/pkg/endpoint/v1"
 	"google.golang.org/grpc"
 )
 
