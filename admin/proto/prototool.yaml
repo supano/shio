@@ -7,7 +7,7 @@ lint:
 
 generate:
   go_options:
-    import_path: github.com/digithun/shio/admin-api/proto
+    import_path: github.com/digithun/shio/admin/proto
 
   plugins:
     - name: go

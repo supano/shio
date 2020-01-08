@@ -1,4 +1,4 @@
-module github.com/digithun/shio/admin-api
+module github.com/digithun/shio/admin
 
 go 1.13
 
