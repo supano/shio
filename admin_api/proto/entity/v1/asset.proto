@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package cc.entity.v1;
+
+option csharp_namespace = "Cc.Entity.V1";
+option go_package = "entityv1";
+option java_multiple_files = true;
+option java_outer_classname = "AssetProto";
+option java_package = "com.cc.entity.v1";
+option objc_class_prefix = "CEX";
+option php_namespace = "Cc\\Entity\\V1";
+
+// Asset.
+message Asset {
+  string id = 1;
+  string acl_tag = 2;
+  string merchant_id = 3;
+  string describe_url = 4;
+  int64 price = 5;
+  AssetMetaInfo meta = 6;
+  int64 created_at = 7;
+}
+
+// AssetMetaInfo.
+message AssetMetaInfo {
+  string kind = 1;
+  string cover_image_url = 2;
+  string title = 3;
+  string description = 4;
+  string teaser = 5;
+  string slug = 6;
+  string event_url = 7;
+}

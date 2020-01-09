@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package cc.endpoint.v1;
+
+option csharp_namespace = "Cc.Endpoint.V1";
+option go_package = "endpointv1";
+option java_multiple_files = true;
+option java_outer_classname = "ShioAdminApiProto";
+option java_package = "com.cc.endpoint.v1";
+option objc_class_prefix = "CEX";
+option php_namespace = "Cc\\Endpoint\\V1";
+
+import "entity/v1/asset.proto";
+import "entity/v1/session.proto";
+import "entity/v1/transaction.proto";
+import "entity/v1/user.proto";
+
+// ShioAdminAPI api for catcat admin console.
+service ShioAdminAPI {
+  // Login Endpoint.
+  rpc Login(LoginRequest) returns (LoginResponse);
+  // GetAssetList.
+  rpc GetAssetList(GetAssetListRequest) returns (GetAssetListResponse);
+  // GetTransactionList.
+  rpc GetTransactionList(GetTransactionListRequest) returns (GetTransactionListResponse);
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  cc.entity.v1.Session session = 1;
+}
+
+message GetAssetListRequest {}
+
+message GetAssetListResponse {
+  repeated cc.entity.v1.Asset list = 1;
+}
+
+message GetTransactionListRequest {}
+
+message GetTransactionListResponse {
+  repeated cc.entity.v1.Transaction list = 1;
+}

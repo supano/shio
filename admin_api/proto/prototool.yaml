@@ -1,0 +1,26 @@
+protoc:
+  version: 3.8.0
+  allow_unused_imports: true
+
+lint:
+  group: uber2
+
+generate:
+  go_options:
+    import_path: github.com/digithun/shio/admin_api/proto
+
+  plugins:
+    - name: js
+      flags: import_style=commonjs,binary
+      output: ../../packages/admin_console/shio_rpc_client/__generated__
+    - name: ts
+      flags: service=grpc-web
+      output: ../../packages/admin_console/shio_rpc_client/__generated__
+      path: protoc-gen-ts
+    - name: grpc-web
+      output: ../../packages/admin_console/shio_rpc_client/__generated__
+      flags: import_style=commonjs+dts,mode=grpcwebtext
+    - name: go
+      type: go
+      flags: plugins=grpc
+      output: ../pkg
