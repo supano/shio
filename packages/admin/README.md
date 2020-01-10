@@ -1,6 +1,6 @@
-# shio-admin-console
+# admin
 
-> Shio admin console
+> My priceless Nuxt.js project
 
 ## Build Setup
 

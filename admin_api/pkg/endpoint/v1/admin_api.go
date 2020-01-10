@@ -43,12 +43,12 @@ func (e *AdminEndPoint) GetAssetList(ctx context.Context,req *GetAssetListReques
 }
 
 func (e *AdminEndPoint) GetTransactionList(ctx context.Context,req *GetTransactionListRequest) (*GetTransactionListResponse, error)  {
-	list, err := e.transaction.GetTransactionList(ctx)
+	_, err := e.transaction.GetTransactionList(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &GetTransactionListResponse{
-		List:            list,
+		List:            nil,
 	}, nil
 }

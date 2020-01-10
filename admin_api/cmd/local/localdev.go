@@ -8,7 +8,7 @@ import (
 )
 
 func main()  {
-	err := os.Setenv("DATASTORE_EMULATOR_HOST", "localhost:5545")
+	//err := os.Setenv("DATASTORE_EMULATOR_HOST", "localhost:5545")
 
 	//projectId := os.Getenv("DATASTORE_PROJECT_ID")
 	//if projectId == "" {

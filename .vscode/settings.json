@@ -8,10 +8,10 @@
     "**/*.d.ts.map": true,
     "**/node_modules": true,
     "**/*.d.ts": {
-      "when": "$(basename).ts"
+      "when": "$(basename).ts,vue.shim.d.ts"
     },
     "**/*.js": {
-      "when": "$(basename).ts",
+      "when": "$(basename).ts"
     },
     "**/*.js.map": {
       "when": "$(basename)"

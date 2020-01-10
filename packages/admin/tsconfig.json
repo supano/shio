@@ -1,5 +1,4 @@
 {
-  "extends": "../../packages/tsconfig.base.json",
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",
@@ -16,7 +15,8 @@
       "@/*": ["./*"]
     },
     "types": ["@types/node", "@nuxt/types"],
-    "checkJs": true
+    "experimentalDecorators": true,
+    "importHelpers": true
   },
   "exclude": ["node_modules"]
 }

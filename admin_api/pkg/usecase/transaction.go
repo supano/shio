@@ -2,12 +2,11 @@ package usecase
 
 import (
 	"context"
-	entityv1 "github.com/digithun/shio/admin_api/pkg/entity/v1"
 	"github.com/digithun/shio/admin_api/pkg/repository"
 )
 
 type TransactionUseCase interface {
-	GetTransactionList(ctx context.Context) ([]*entityv1.Transaction, error)
+	GetTransactionList(ctx context.Context) ([]*repository.TransactionTest, error)
 }
 
 type DefaultTransactionUseCase struct {
@@ -20,7 +19,7 @@ func NewDefaultTransactionUseCase(transaction repository.TransactionRepository) 
 	}
 }
 
-func (u *DefaultTransactionUseCase) GetTransactionList(ctx context.Context) ([]*entityv1.Transaction, error) {
+func (u *DefaultTransactionUseCase) GetTransactionList(ctx context.Context) ([]*repository.TransactionTest, error) {
 	return u.transaction.FindTransactionList(ctx)
 }
 

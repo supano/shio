@@ -12,13 +12,13 @@ generate:
   plugins:
     - name: js
       flags: import_style=commonjs,binary
-      output: ../../packages/admin_console/shio_rpc_client/__generated__
+      output: ../../packages/admin/shio_rpc_client/__generated__
     - name: ts
       flags: service=grpc-web
-      output: ../../packages/admin_console/shio_rpc_client/__generated__
+      output: ../../packages/admin/shio_rpc_client/__generated__
       path: protoc-gen-ts
     - name: grpc-web
-      output: ../../packages/admin_console/shio_rpc_client/__generated__
+      output: ../../packages/admin/shio_rpc_client/__generated__
       flags: import_style=commonjs+dts,mode=grpcwebtext
     - name: go
       type: go

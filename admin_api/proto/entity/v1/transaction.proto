@@ -22,8 +22,8 @@ message Payment {
 message Transaction {
   string id = 1;
   string asset_id = 2;
-  string transaction_status = 3;
-  float price = 4;
+  string status = 3;
+  int64 price = 4;
   string user_id = 5;
   repeated string describe_urls = 6;
 }
