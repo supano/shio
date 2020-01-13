@@ -4,7 +4,7 @@
       <div class="logo">
         CatCat
       </div>
-      <a-menu theme="dark" mode="inline">
+      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="[this.$route.name]">
         <a-menu-item key="revenue">
           <nuxt-link to="/revenue">
             <a-icon type="desktop" />
@@ -50,7 +50,7 @@ export default {
     }
   },
   computed: {
-    header() {
+    header: function() {
       return this.$accessor.pagedetail.header
     }
   }
