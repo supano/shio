@@ -3,7 +3,14 @@
     <div class="searh-wrapper">
       <a-input-search placeholder="input search text" style="width: 500px" size="large" @search="onSearch" enterButton />
     </div>
-    <a-table :columns="columns" :rowKey="record => record.email" :dataSource="data" :pagination="pagination" :loading="loading" @change="handleTableChange">
+    <a-table
+      :columns="columns"
+      :rowKey="record => record.email"
+      :dataSource="this.$accessor.user.list"
+      :pagination="paginationState"
+      :loading="loading"
+      @change="handleTableChange"
+    >
       <span slot="action" slot-scope="record" class="flex justify-center">
         <a href="#" @click="handleSeeMore(record)">
           <a-icon type="eye" :style="{ fontSize: '24px' }" />
@@ -14,21 +21,24 @@
 </template>
 
 <script lang="ts">
-interface IUser {
-  name: string
-  email: string
-  lastAccess: string
-  lastPayment: string
-  phone: string
-  createdAt: string
+import { IFetchUserType } from '../store/user'
+import moment from 'moment'
+
+export interface IUserTableState {
+  current: number
+  pageSize: number
+  filterName: string | null
 }
 
 export default {
   data: function() {
     return {
-      data: [] as IUser[],
       loading: false,
-      pagination: {} as any,
+      paginationState: {
+        current: 1,
+        pageSize: 10,
+        filterName: null
+      } as IUserTableState,
       columns: [
         {
           title: 'Customer Name',
@@ -63,48 +73,30 @@ export default {
     }
   },
   methods: {
-    handleTableChange: function(pagination, filters, sorter) {
+    onSearch: async function(search: string) {
       this.$data.loading = true
-      this.$data.pagination = { ...pagination }
-      setTimeout(() => {
-        for (let i = pagination.current; i < pagination.current + 10; i++) {
-          this.$data.data.push({
-            name: 'Name',
-            email: `email${i}@email.com`,
-            lastAccess: new Date().toLocaleString(),
-            lastPayment: new Date().toLocaleString(),
-            phone: '0800000000',
-            createdAt: new Date().toLocaleString()
-          })
-        }
-        this.$data.loading = false
-      }, 2000)
-    },
-    fetchUsers(): void {
-      this.$data.loading = true
-      for (let i = 0; i < 10; i++) {
-        this.$data.data.push({
-          name: 'Name',
-          email: `email${i}@email.com`,
-          lastAccess: new Date().toLocaleString(),
-          lastPayment: new Date().toLocaleString(),
-          phone: '0800000000',
-          createdAt: new Date().toLocaleString()
-        })
-      }
+      this.$data.paginationState = { ...this.$data.paginationState, filterName: search }
+      await this.reload()
       this.$data.loading = false
     },
-    handleSeeMore: function(record: any) {
-      alert(record.email)
+    handleTableChange: async function(pagination) {
+      this.$data.loading = true
+      this.$data.pagination = { ...this.$data.paginationState, ...pagination }
+      await this.reload()
+      this.$data.loading = false
+    },
+    reload: function() {
+      this.$accessor.user.fetch({
+        filterName: this.$data.paginationState.filterName,
+        currentPage: this.$data.paginationState.current,
+        pageSize: this.$data.paginationState.pageSize
+      } as IFetchUserType)
     }
   },
-  mounted: function() {
-    this.$data.pagination = {
-      current: 1,
-      total: 500,
-      pageSize: 10
-    }
-    this.fetchUsers()
+  mounted: async function() {
+    this.$data.loading = true
+    await this.reload()
+    this.$data.loading = false
   }
 }
 </script>

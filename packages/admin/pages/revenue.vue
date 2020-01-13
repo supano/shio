@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import { IFetchRevenueType } from '../store/revenue'
 
 export interface IRevenueTableState {
@@ -60,45 +60,33 @@ export default {
     }
   },
   methods: {
-    onChange: async function(filter: Moment, dateString: string) {
+    onChange: async function(date: moment.Moment, dateString: string) {
       this.$data.loading = true
-
-      this.$data.paginationState = { ...this.$data.paginationState, filterDate: filter.unix() }
-
-      await this.$accessor.revenue.fetchRevenue({
-        filterDate: this.$data.paginationState.filterDate,
-        currentPage: this.$data.paginationState.current,
-        pageSize: this.$data.paginationState.pageSize
-      } as IFetchRevenueType)
+      this.$data.paginationState = { ...this.$data.paginationState, filterDate: date.unix() }
+      await this.reload()
       this.$data.loading = false
     },
     handleTableChange: async function(pagination) {
       this.$data.loading = true
-      this.$data.paginationState = { ...this.$data.paginationState.filterDate, ...pagination }
-
-      await this.$accessor.revenue.fetchRevenue({
+      this.$data.paginationState = { ...this.$data.paginationState, ...pagination }
+      await this.reload()
+      this.$data.loading = false
+    },
+    reload() {
+      this.$accessor.revenue.fetch({
         filterDate: this.$data.paginationState.filterDate,
         currentPage: this.$data.paginationState.current,
         pageSize: this.$data.paginationState.pageSize
       } as IFetchRevenueType)
-      this.$data.loading = false
     }
   },
   mounted: async function() {
     this.$data.loading = true
 
     this.$accessor.pagedetail.setHeader('Revenue')
-    await this.$accessor.revenue.fetchRevenue(new Date())
+    await this.reload()
 
     this.$data.loading = false
-  },
-  watch: {
-    data() {
-      return 'a'
-    },
-    pagination(val) {
-      console.log('val', val)
-    }
   }
 }
 </script>

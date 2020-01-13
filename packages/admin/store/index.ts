@@ -2,6 +2,9 @@ import { getStoreType, getAccessorType, mutationTree, actionTree } from 'nuxt-ty
 import { Context } from '@nuxt/types'
 
 import * as pagedetail from './pagedetail'
+import * as revenue from './revenue'
+import * as transaction from './transaction'
+import * as user from './user'
 
 export const state = () => ({})
 
@@ -23,6 +26,9 @@ export const accessorType = getAccessorType({
   mutations,
   state,
   modules: {
-    pagedetail
+    pagedetail,
+    revenue,
+    transaction,
+    user
   }
 })

@@ -1,22 +1,23 @@
 import { getterTree, mutationTree, actionTree } from 'nuxt-typed-vuex'
 import { AxiosError } from 'axios'
 
-export interface IRevenue {
-  assetName: string
-  totalAmount: number
-  mdr: number
-  vat: number
-  netAmount: number
+export interface IUser {
+  name: string
+  email: string
+  lastAccess: string
+  lastPayment: string
+  phone: string
+  createdAt: string
 }
 
-export interface IFetchRevenueType {
-  filterDate: number
+export interface IFetchUserType {
+  filterName: string | null
   currentPage: number
   pageSize: number
 }
 
 export const state = () => ({
-  list: [] as IRevenue[]
+  list: [] as IUser[]
 })
 
 export const getters = getterTree(state, {
@@ -24,7 +25,7 @@ export const getters = getterTree(state, {
 })
 
 export const mutations = mutationTree(state, {
-  setList(state, list: IRevenue[]) {
+  setList(state, list: IUser[]) {
     state.list = list
   }
 })
@@ -32,16 +33,16 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state, getters, mutations },
   {
-    fetch({ commit }, filter: IFetchRevenueType) {
+    fetch({ commit }, filter: IFetchUserType) {
       this.$axios
-        .$get('/revenue.json', {
+        .$get('/user.json', {
           params: {
-            createdAt: filter.filterDate,
+            name: filter.filterName,
             skip: filter.currentPage * filter.pageSize,
             limit: filter.pageSize
           }
         })
-        .then((res: IRevenue[]) => {
+        .then((res: IUser[]) => {
           commit('setList', res)
           return res
         })

@@ -27,7 +27,7 @@
     </a-layout-sider>
     <a-layout :style="{ marginLeft: '200px' }">
       <a-layout-header :style="{ background: '#fff', paddingLeft: '20px', paddingRight: '20px' }">
-        <p>{{ header }}</p>
+        <h1>{{ header }}</h1>
         <a-button type="link" @click="logout"><a-icon type="logout" /> Logout </a-button>
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px 0', overflow: 'initial' }">
