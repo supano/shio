@@ -19,20 +19,15 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['ant-design-vue/dist/antd.css'],
+  css: ['ant-design-vue/dist/antd.css', 'assets/css/common.css'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/antd-ui'],
+  plugins: ['@/plugins/antd-ui', '@/plugins/axios'],
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/tailwindcss'],
-  tailwindcss: {
-    configPath: '~/tailwind.config.js',
-    cssPath: '~/assets/css/tailwind.css',
-    purgeCSSInDev: false
-  },
+  buildModules: ['@nuxt/typescript-build', 'nuxt-typed-vuex'],
   /*
    ** Nuxt.js modules
    */
@@ -54,7 +49,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
-  },
-  transpileDependencies: ['vuex-module-decorators']
+    extend(config, ctx) {},
+    transpile: [/typed-vuex/]
+  }
 }

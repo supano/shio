@@ -1,24 +1,43 @@
 <template>
   <div>
-    <div class="flex flex-row mb-5 justify-end">
+    <div class="searh-wrapper">
       <a-month-picker @change="onChange" style="width: 300px" size="large" format="MMMM YYYY" placeholder="Select month" />
     </div>
-    <a-table :columns="columns" :rowKey="record => record.name" :dataSource="data" :pagination="pagination" :loading="loading" @change="handleTableChange"> </a-table>
+    <a-table
+      :columns="columns"
+      :rowKey="record => record.name"
+      :dataSource="this.$accessor.revenue.list"
+      :pagination="paginationState"
+      :loading="loading"
+      @change="handleTableChange"
+    >
+    </a-table>
   </div>
 </template>
 
 <script lang="ts">
+import moment, { Moment } from 'moment'
+import { IFetchRevenueType } from '../store/revenue'
+
+export interface IRevenueTableState {
+  current: number
+  pageSize: number
+  filterDate: number
+}
+
 export default {
   data: function() {
     return {
-      data: [],
       loading: false,
-      pagination: {},
+      paginationState: {
+        current: 1,
+        pageSize: 10,
+        filterDate: moment().unix()
+      } as IRevenueTableState,
       columns: [
         {
           title: 'Book Name',
           dataIndex: 'name',
-          sorter: true,
           width: '50%'
         },
         {
@@ -41,34 +60,45 @@ export default {
     }
   },
   methods: {
-    handleTableChange: function(pagination, filters, sorter) {
+    onChange: async function(filter: Moment, dateString: string) {
       this.$data.loading = true
-      console.log('pagination', pagination)
-      console.log('filters', filters)
-      console.log('sorter', sorter)
-      this.$data.pagination = { ...pagination }
-      setTimeout(() => {
-        for (let i = pagination.current; i < pagination.current + 10; i++) {
-          this.$data.data.push({ name: `Book Name ${i}`, amount: 10, mdr: 3, vat: 7, net: 97 })
-        }
-        this.$data.loading = false
-      }, 2000)
+
+      this.$data.paginationState = { ...this.$data.paginationState, filterDate: filter.unix() }
+
+      await this.$accessor.revenue.fetchRevenue({
+        filterDate: this.$data.paginationState.filterDate,
+        currentPage: this.$data.paginationState.current,
+        pageSize: this.$data.paginationState.pageSize
+      } as IFetchRevenueType)
+      this.$data.loading = false
     },
-    fetchRevenue: function() {
+    handleTableChange: async function(pagination) {
       this.$data.loading = true
-      for (let i = 0; i < 10; i++) {
-        this.$data.data.push({ name: `Book Name ${i}`, amount: 10, mdr: 3, vat: 7, net: 97 })
-      }
+      this.$data.paginationState = { ...this.$data.paginationState.filterDate, ...pagination }
+
+      await this.$accessor.revenue.fetchRevenue({
+        filterDate: this.$data.paginationState.filterDate,
+        currentPage: this.$data.paginationState.current,
+        pageSize: this.$data.paginationState.pageSize
+      } as IFetchRevenueType)
       this.$data.loading = false
     }
   },
-  mounted: function() {
-    this.$data.pagination = {
-      current: 1,
-      total: 500,
-      pageSize: 10
+  mounted: async function() {
+    this.$data.loading = true
+
+    this.$accessor.pagedetail.setHeader('Revenue')
+    await this.$accessor.revenue.fetchRevenue(new Date())
+
+    this.$data.loading = false
+  },
+  watch: {
+    data() {
+      return 'a'
+    },
+    pagination(val) {
+      console.log('val', val)
     }
-    this.fetchRevenue()
   }
 }
 </script>

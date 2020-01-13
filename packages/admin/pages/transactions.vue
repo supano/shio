@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="flex flex-row mb-5 justify-end">
+    <div class="searh-wrapper">
       <a-month-picker @change="onChange" style="width: 300px" size="large" format="MMMM YYYY" placeholder="Select month" />
     </div>
-    <a-table :columns="columns" :rowKey="record => record.uuid" :dataSource="data" :pagination="pagination" :loading="loading" @change="handleTableChange"> </a-table>
+    <a-table :columns="columns" :rowKey="record => record.uuid" :dataSource="data" :pagination="pagination" :loading="loading"> </a-table>
   </div>
 </template>
 
 <script lang="ts">
+import { Moment } from 'moment'
+
 export default {
   data: function() {
     return {
@@ -17,8 +19,7 @@ export default {
       columns: [
         {
           title: 'Date',
-          dataIndex: 'createdAt',
-          sorter: true
+          dataIndex: 'createdAt'
         },
         {
           title: 'Customer Name',
@@ -36,21 +37,10 @@ export default {
     }
   },
   methods: {
+    onChange: function(date: moment, dateString: string) {},
     handleTableChange: function(pagination, filters, sorter) {
       this.$data.loading = true
       this.$data.pagination = { ...pagination }
-      setTimeout(() => {
-        for (let i = pagination.current; i < pagination.current + 10; i++) {
-          this.$data.data.push({ uuid: i, createdAt: new Date().toLocaleString(), createdBy: 'Bat man', assetName: 'Batmobile', net: 700 })
-        }
-        this.$data.loading = false
-      }, 2000)
-    },
-    fetchTransactions: function() {
-      this.$data.loading = true
-      for (let i = 0; i < 10; i++) {
-        this.$data.data.push({ uuid: i, createdAt: new Date().toLocaleString(), createdBy: 'Bat man', assetName: 'Batmobile', net: 700 })
-      }
       this.$data.loading = false
     }
   },
@@ -60,7 +50,13 @@ export default {
       total: 500,
       pageSize: 10
     }
-    this.fetchTransactions()
+    // this.fetchTransactions()
+
+    for (let i = 0; i < 500; i++) {
+      this.$data.data.push({ uuid: i, createdAt: new Date().toLocaleString(), createdBy: 'Bat man', assetName: 'Batmobile', net: 700 })
+    }
+
+    console.log(this.$data.data)
   }
 }
 </script>

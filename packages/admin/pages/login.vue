@@ -1,15 +1,15 @@
 <template>
   <div id="login-wrapper">
-    <div id="login-panel">
-      <a-row>
+    <div>
+      <a-row id="login-panel" align="middle" type="flex" :gutter="0">
         <a-col :span="12">
-          <img src="../assets/img/photo-of-plant-on-pot-1022922.jpg" width="500px" alt="" />
+          <img src="../assets/img/green-leafed-indoor-plant-1048035.jpg" width="500px" alt="" />
         </a-col>
         <a-col :span="12" id="form-login">
           <h1>CatCat Admin Portal</h1>
           <a-input placeholder="email" type="email" size="large" />
           <a-input placeholder="password" type="password" size="large" />
-          <a-button type="primary" id="login-btn" size="large">Login</a-button>
+          <a-button type="primary" id="login-btn" size="large" @click="login">Login</a-button>
         </a-col>
       </a-row>
     </div>
@@ -18,7 +18,18 @@
 
 <script lang="ts">
 export default {
-  layout: 'empty'
+  layout: 'empty',
+  data: function() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    login: function() {
+      return this.$router.push('/')
+    }
+  }
 }
 </script>
 
@@ -28,11 +39,15 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #e7e7e7;
+  background-color: #cecece;
 }
 #login-panel {
   width: 1000px;
-  border: 1px solid #e0e0e0;
+  background-color: white;
+
+  -webkit-box-shadow: 10px 10px 60px -32px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 60px -32px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 10px 60px -32px rgba(0, 0, 0, 0.75);
 }
 
 #form-login {

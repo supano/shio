@@ -1,17 +1,32 @@
-import * as Vuex from 'vuex'
+import { getterTree, mutationTree, actionTree } from 'nuxt-typed-vuex'
 
-new Vuex.Store({
-  modules: {
-    pagedetail: {
-      namespaced: true,
-      state: () => ({
-        header: 'Default Header' as string
-      }),
-      mutations: {
-        update(state, { text }) {
-          state.header = text
-        }
-      }
-    }
+export interface IPageDetailType {
+  header: string
+}
+
+export const state = () =>
+  ({
+    header: ''
+  } as IPageDetailType)
+
+export const getters = getterTree(state, {
+  header: state => state.header as string
+})
+
+export const mutations = mutationTree(state, {
+  setHeader(state, newValue: string) {
+    state.header = newValue
   }
 })
+
+export const actions = actionTree(
+  { state, getters, mutations },
+  {
+    initialise({ commit }) {
+      commit('setHeader', 'This is Default Header')
+    },
+    setHeader({ commit }, header: string) {
+      commit('setHeader', header)
+    }
+  }
+)

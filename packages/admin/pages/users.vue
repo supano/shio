@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-col flex-start mb-5">
+    <div class="searh-wrapper">
       <a-input-search placeholder="input search text" style="width: 500px" size="large" @search="onSearch" enterButton />
     </div>
     <a-table :columns="columns" :rowKey="record => record.email" :dataSource="data" :pagination="pagination" :loading="loading" @change="handleTableChange">
@@ -28,7 +28,7 @@ export default {
     return {
       data: [] as IUser[],
       loading: false,
-      pagination: {},
+      pagination: {} as any,
       columns: [
         {
           title: 'Customer Name',
@@ -80,7 +80,7 @@ export default {
         this.$data.loading = false
       }, 2000)
     },
-    fetchUsers: function() {
+    fetchUsers(): void {
       this.$data.loading = true
       for (let i = 0; i < 10; i++) {
         this.$data.data.push({
@@ -94,7 +94,7 @@ export default {
       }
       this.$data.loading = false
     },
-    handleSeeMore: function(record) {
+    handleSeeMore: function(record: any) {
       alert(record.email)
     }
   },

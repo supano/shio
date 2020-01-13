@@ -4,7 +4,7 @@
       <div class="logo">
         CatCat
       </div>
-      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['4']">
+      <a-menu theme="dark" mode="inline">
         <a-menu-item key="revenue">
           <nuxt-link to="/revenue">
             <a-icon type="desktop" />
@@ -26,8 +26,9 @@
       </a-menu>
     </a-layout-sider>
     <a-layout :style="{ marginLeft: '200px' }">
-      <a-layout-header :style="{ background: '#fff', padding: 0 }">
-        {{ this.$store.state.pagedetail.header }}
+      <a-layout-header :style="{ background: '#fff', paddingLeft: '20px', paddingRight: '20px' }">
+        <p>{{ header }}</p>
+        <a-button type="link" @click="logout"><a-icon type="logout" /> Logout </a-button>
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px 0', overflow: 'initial' }">
         <div :style="{ padding: '24px', background: '#fff', textAlign: 'center' }">
@@ -43,47 +44,20 @@
 
 <script lang="ts">
 export default {
-  data() {
-    return {
-      current: ['mail'],
-      openKeys: ['sub1']
-    }
-  },
   methods: {
-    handleClick(e: string) {
-      console.log('click', e)
-    },
-    titleClick(e: string) {
-      console.log('titleClick', e)
+    logout(): void {
+      this.$router.push('/login')
     }
   },
-  watch: {
-    openKeys(val: string) {
-      console.log('openKeys', val)
+  computed: {
+    header() {
+      return this.$accessor.pagedetail.header
     }
   }
 }
 </script>
 
 <style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
 #main-layout .logo {
   height: 32px;
   line-height: 32px;
@@ -93,5 +67,13 @@ html {
   color: white;
   font-weight: bold;
   font-size: 20px;
+}
+
+.ant-layout-header {
+  display: flex;
+  flex-grow: 1;
+  align-items: baseline;
+  /* padding-right: 20px; */
+  justify-content: space-between;
 }
 </style>
