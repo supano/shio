@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { IFetchUserType } from '../store/user'
+import { IFetchUserType, IUser } from '../store/user'
 import moment from 'moment'
 
 export interface IUserTableState {
@@ -30,20 +30,25 @@ export interface IUserTableState {
   filterName: string | null
 }
 
+export interface IUserPageData {
+  loading: boolean
+  paginationState: IUserTableState
+  columns: Array<object>
+}
+
 export default {
-  data: function() {
+  data: function(): IUserPageData {
     return {
       loading: false,
       paginationState: {
         current: 1,
         pageSize: 10,
         filterName: null
-      } as IUserTableState,
+      },
       columns: [
         {
           title: 'Customer Name',
-          dataIndex: 'name',
-          sorter: true
+          dataIndex: 'name'
         },
         {
           title: 'Email',
@@ -74,29 +79,30 @@ export default {
   },
   methods: {
     onSearch: async function(search: string) {
-      this.$data.loading = true
       this.$data.paginationState = { ...this.$data.paginationState, filterName: search }
       await this.reload()
-      this.$data.loading = false
     },
     handleTableChange: async function(pagination) {
-      this.$data.loading = true
       this.$data.pagination = { ...this.$data.paginationState, ...pagination }
       await this.reload()
-      this.$data.loading = false
     },
-    reload: function() {
-      this.$accessor.user.fetch({
-        filterName: this.$data.paginationState.filterName,
-        currentPage: this.$data.paginationState.current,
-        pageSize: this.$data.paginationState.pageSize
-      } as IFetchUserType)
+    reload: async function() {
+      this.$data.loading = true
+
+      await this.$accessor.user
+        .fetch({
+          filterName: this.$data.paginationState.filterName,
+          currentPage: this.$data.paginationState.current,
+          pageSize: this.$data.paginationState.pageSize
+        } as IFetchUserType)
+        .finally(() => {
+          this.$data.loading = false
+        })
     }
   },
   mounted: async function() {
-    this.$data.loading = true
+    this.$accessor.pagedetail.setHeader('Users')
     await this.reload()
-    this.$data.loading = false
   }
 }
 </script>

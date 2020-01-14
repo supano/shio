@@ -33,8 +33,8 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state, getters, mutations },
   {
-    fetch({ commit }, filter: IFetchUserType) {
-      this.$axios
+    fetch({ commit }, filter: IFetchUserType): Promise<IUser[] | void> {
+      return this.$axios
         .$get('/user.json', {
           params: {
             name: filter.filterName,
@@ -46,9 +46,7 @@ export const actions = actionTree(
           commit('setList', res)
           return res
         })
-        .catch((err: AxiosError) => {
-          console.error(err.message)
-        })
+        .catch((err: AxiosError) => console.error(err))
     }
   }
 )

@@ -3,7 +3,7 @@
     "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["esnext", "esnext.asynciterable", "dom", "ES2020"],
+    "lib": ["esnext", "esnext.asynciterable", "dom", "ES2018"],
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
@@ -14,7 +14,7 @@
       "~/*": ["./*"],
       "@/*": ["./*"]
     },
-    "types": ["@types/node", "@nuxt/types", "@nuxt/vue-app", "@nuxtjs/axios"],
+    "types": ["@types/node", "@nuxt/types", "@nuxtjs/axios", "ant-design-vue/types"],
     "experimentalDecorators": true,
     "importHelpers": true
   },

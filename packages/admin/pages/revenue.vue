@@ -61,32 +61,30 @@ export default {
   },
   methods: {
     onChange: async function(date: moment.Moment, dateString: string) {
-      this.$data.loading = true
       this.$data.paginationState = { ...this.$data.paginationState, filterDate: date.unix() }
       await this.reload()
-      this.$data.loading = false
     },
     handleTableChange: async function(pagination) {
-      this.$data.loading = true
       this.$data.paginationState = { ...this.$data.paginationState, ...pagination }
       await this.reload()
-      this.$data.loading = false
     },
-    reload() {
-      this.$accessor.revenue.fetch({
-        filterDate: this.$data.paginationState.filterDate,
-        currentPage: this.$data.paginationState.current,
-        pageSize: this.$data.paginationState.pageSize
-      } as IFetchRevenueType)
+    reload: async function() {
+      this.$data.loading = true
+
+      await this.$accessor.revenue
+        .fetch({
+          filterDate: this.$data.paginationState.filterDate,
+          currentPage: this.$data.paginationState.current,
+          pageSize: this.$data.paginationState.pageSize
+        } as IFetchRevenueType)
+        .finally(() => {
+          this.$data.loading = false
+        })
     }
   },
   mounted: async function() {
-    this.$data.loading = true
-
     this.$accessor.pagedetail.setHeader('Revenue')
     await this.reload()
-
-    this.$data.loading = false
   }
 }
 </script>

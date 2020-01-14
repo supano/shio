@@ -6,7 +6,7 @@ export interface IPageDetailType {
 
 export const state = () =>
   ({
-    header: ''
+    header: 'Default Header'
   } as IPageDetailType)
 
 export const getters = getterTree(state, {
@@ -22,9 +22,6 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state, getters, mutations },
   {
-    initialise({ commit }) {
-      commit('setHeader', 'This is Default Header')
-    },
     setHeader({ commit }, header: string) {
       commit('setHeader', header)
     }

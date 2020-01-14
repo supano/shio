@@ -1,7 +1,7 @@
 import { getterTree, mutationTree, actionTree } from 'nuxt-typed-vuex'
 import { AxiosError } from 'axios'
 
-export interface ITransactionType {
+export interface ITransaction {
   createdAt: Date
   createdBy: string
   assetName: string
@@ -15,7 +15,7 @@ export interface IFetchTransactionType {
 }
 
 export const state = () => ({
-  list: [] as ITransactionType[]
+  list: [] as ITransaction[]
 })
 
 export const getters = getterTree(state, {
@@ -23,7 +23,7 @@ export const getters = getterTree(state, {
 })
 
 export const mutations = mutationTree(state, {
-  setList(state, list: ITransactionType[]) {
+  setList(state, list: ITransaction[]) {
     state.list = list
   }
 })
@@ -31,8 +31,8 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state, getters, mutations },
   {
-    fetch({ commit }, filter: IFetchTransactionType) {
-      this.$axios
+    fetch({ commit }, filter: IFetchTransactionType): Promise<ITransaction[] | void> {
+      return this.$axios
         .$get('/transaction.json', {
           params: {
             createdAt: filter.filterDate,
@@ -40,13 +40,11 @@ export const actions = actionTree(
             limit: filter.pageSize
           }
         })
-        .then((res: ITransactionType[]) => {
+        .then((res: ITransaction[]) => {
           commit('setList', res)
           return res
         })
-        .catch((err: AxiosError) => {
-          console.error(err.message)
-        })
+        .catch((err: AxiosError) => console.error(err))
     }
   }
 )

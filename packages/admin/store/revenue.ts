@@ -32,8 +32,8 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state, getters, mutations },
   {
-    fetch({ commit }, filter: IFetchRevenueType) {
-      this.$axios
+    fetch({ commit }, filter: IFetchRevenueType): Promise<IRevenue[] | void> {
+      return this.$axios
         .$get('/revenue.json', {
           params: {
             createdAt: filter.filterDate,

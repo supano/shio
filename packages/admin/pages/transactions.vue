@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import moment from 'moment'
-import { IFetchTransactionType } from '../store/transaction'
+import { IFetchTransactionType, ITransactionType } from '../store/transaction'
 
 export interface ITransacionTableState {
   current: number
@@ -48,29 +48,30 @@ export default {
   },
   methods: {
     onChange: async function(date: moment.Moment, dateString: string) {
-      this.$data.loading = true
       this.$data.paginationState = { ...this.$data.paginationState, filterDate: date.unix() }
       await this.reload()
-      this.$data.loading = false
     },
-    handleTableChange: function(pagination) {
-      this.$data.loading = true
+    handleTableChange: async function(pagination) {
       this.$data.pagination = { ...this.$data.paginationState, ...pagination }
-      this.reload()
-      this.$data.loading = false
+      await this.reload()
     },
-    reload: function() {
-      this.$accessor.transaction.fetch({
-        filterDate: this.$data.paginationState.filterDate,
-        currentPage: this.$data.paginationState.current,
-        pageSize: this.$data.paginationState.pageSize
-      } as IFetchTransactionType)
+    reload: async function() {
+      this.$data.loading = true
+
+      await this.$accessor.transaction
+        .fetch({
+          filterDate: this.$data.paginationState.filterDate,
+          currentPage: this.$data.paginationState.current,
+          pageSize: this.$data.paginationState.pageSize
+        } as IFetchTransactionType)
+        .finally(() => {
+          this.$data.loading = false
+        })
     }
   },
   mounted: async function() {
-    this.$data.loading = true
+    this.$accessor.pagedetail.setHeader('Transaction')
     await this.reload()
-    this.$data.loading = false
   }
 }
 </script>
