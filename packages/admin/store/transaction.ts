@@ -10,6 +10,7 @@ export interface ITransaction {
 
 export interface IFetchTransactionType {
   filterDate: number
+  filterPhone?: string
   currentPage: number
   pageSize: number
 }
@@ -37,7 +38,8 @@ export const actions = actionTree(
           params: {
             createdAt: filter.filterDate,
             skip: filter.currentPage * filter.pageSize,
-            limit: filter.pageSize
+            limit: filter.pageSize,
+            phone: filter.filterPhone
           }
         })
         .then((res: ITransaction[]) => {

@@ -51,5 +51,12 @@ export default {
      */
     extend(config, ctx) {},
     transpile: [/typed-vuex/]
+  },
+  pageTransition: {
+    name: 'page',
+    mode: 'out-in',
+    beforeEnter(el) {
+      console.log('Before enter...')
+    }
   }
 }

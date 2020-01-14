@@ -4,7 +4,7 @@
       <div class="logo">
         CatCat
       </div>
-      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="[this.$route.name]">
+      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="[this.$route.name.split('-')[0]]">
         <a-menu-item key="revenue">
           <nuxt-link to="/revenue">
             <a-icon type="desktop" />
