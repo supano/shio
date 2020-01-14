@@ -3,14 +3,10 @@
     <div class="searh-wrapper">
       <a-input-search placeholder="input search text" style="width: 500px" size="large" @search="onSearch" enterButton />
     </div>
-    <a-table
-      :columns="columns"
-      :rowKey="record => record.email"
-      :dataSource="this.$accessor.user.list"
-      :pagination="paginationState"
-      :loading="loading"
-      @change="handleTableChange"
-    >
+    <a-table :columns="columns" :rowKey="record => record.email" :dataSource="this.$accessor.user.list" :pagination="paginationState" :loading="loading" @change="onTableChange">
+      <template slot="lastAccess" slot-scope="lastAccess"> {{ formatTime(lastAccess) }} </template>
+      <template slot="lastPayment" slot-scope="lastPayment"> {{ formatTime(lastPayment) }} </template>
+      <template slot="createdAt" slot-scope="createdAt"> {{ formatTime(createdAt) }} </template>
       <span slot="action" slot-scope="record" class="flex justify-center">
         <nuxt-link :to="`/users/${record.phone}`" no-prefetch>
           <a-icon type="eye" :style="{ fontSize: '24px' }" />
@@ -23,6 +19,7 @@
 <script lang="ts">
 import { IFetchUserType, IUser } from '~/store/user'
 import moment from 'moment'
+import timeUtils from '~/utils/time'
 
 export interface IUserTableState {
   current: number
@@ -56,11 +53,13 @@ export default {
         },
         {
           title: 'Last Access',
-          dataIndex: 'lastAccess'
+          dataIndex: 'lastAccess',
+          scopedSlots: { customRender: 'lastAccess' }
         },
         {
           title: 'Last Payment',
-          dataIndex: 'lastPayment'
+          dataIndex: 'lastPayment',
+          scopedSlots: { customRender: 'lastPayment' }
         },
         {
           title: 'Phone No.',
@@ -68,7 +67,8 @@ export default {
         },
         {
           title: 'Created At',
-          dataIndex: 'createdAt'
+          dataIndex: 'createdAt',
+          scopedSlots: { customRender: 'createdAt' }
         },
         {
           title: 'Action',
@@ -82,8 +82,8 @@ export default {
       this.$data.paginationState = { ...this.$data.paginationState, filterName: search }
       await this.reload()
     },
-    handleTableChange: async function(pagination) {
-      this.$data.pagination = { ...this.$data.paginationState, ...pagination }
+    onTableChange: async function(pagination) {
+      this.$data.paginationState = { ...this.$data.paginationState, ...pagination }
       await this.reload()
     },
     reload: async function() {
@@ -98,6 +98,9 @@ export default {
         .finally(() => {
           this.$data.loading = false
         })
+    },
+    formatTime(t: number) {
+      return timeUtils.timestampToDateString(t)
     }
   },
   mounted: async function() {
