@@ -12,16 +12,16 @@
       @change="handleTableChange"
     >
       <span slot="action" slot-scope="record" class="flex justify-center">
-        <a href="#" @click="handleSeeMore(record)">
+        <nuxt-link :to="`/users/${record.phone}`" no-prefetch>
           <a-icon type="eye" :style="{ fontSize: '24px' }" />
-        </a>
+        </nuxt-link>
       </span>
     </a-table>
   </div>
 </template>
 
 <script lang="ts">
-import { IFetchUserType, IUser } from '../store/user'
+import { IFetchUserType, IUser } from '~/store/user'
 import moment from 'moment'
 
 export interface IUserTableState {

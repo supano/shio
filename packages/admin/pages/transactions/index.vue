@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import moment from 'moment'
-import { IFetchTransactionType, ITransactionType } from '../store/transaction'
+import { IFetchTransactionType, ITransactionType } from '~/store/transaction'
 
 export interface ITransacionTableState {
   current: number

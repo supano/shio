@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import moment from 'moment'
-import { IFetchRevenueType } from '../store/revenue'
+import { IFetchRevenueType } from '~/store/revenue'
 
 export interface IRevenueTableState {
   current: number
